@@ -25,7 +25,5 @@ pub mod wdog;
 
 #[cfg(feature = "g002")]
 pub mod i2c;
-#[cfg(feature = "virq")]
-pub mod interrupt;
 
 pub use device::DeviceResources;
