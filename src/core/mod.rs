@@ -2,7 +2,9 @@
 
 pub mod clint;
 pub mod counters;
-pub mod plic;
+
+/// Platform-Level Interrupt Controller
+pub use e310x::PLIC;
 
 /// Core peripherals
 pub struct CorePeripherals {
@@ -10,17 +12,18 @@ pub struct CorePeripherals {
     pub clint: clint::Clint,
 
     /// Platform-Level Interrupt Controller
-    pub plic: plic::Plic,
+    pub plic: PLIC,
 
     /// Performance counters
     pub counters: counters::PerformanceCounters,
 }
 
 impl CorePeripherals {
+    /// Creates a new instance of CorePeripherals
     pub(crate) fn new(clint: e310x::CLINT, plic: e310x::PLIC) -> Self {
         Self {
             clint: clint.into(),
-            plic: plic.into(),
+            plic,
             counters: counters::PerformanceCounters::new(),
         }
     }
