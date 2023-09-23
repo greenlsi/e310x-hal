@@ -16,6 +16,7 @@ nb = "1.0.0"
 atomic-polyfill = "1.0.2"
 riscv = { version = "0.10.1", features = ["critical-section-single-hart"] }
 e310x = { git = "https://github.com/greenlsi/e310x.git", branch = "master", features = ["rt", "critical-section"] }
+# e310x = { path = "../greenlsi_e310x", features = ["rt", "critical-section"] }
 
 [features]
 g002 = ["e310x/g002"]
