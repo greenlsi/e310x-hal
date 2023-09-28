@@ -101,7 +101,7 @@ impl DelayMs<u32> for Sleep {
         CLINT::mtimecmp0().write(t);
 
         // Enable timer interrupt
-        unsafe { CLINT::enable_mtimer() };
+        unsafe { CLINT::mtimer_enable() };
 
         // Wait For Interrupt will put CPU to sleep until an interrupt hits
         // in our case when internal timer mtime value >= mtimecmp value
@@ -119,7 +119,7 @@ impl DelayMs<u32> for Sleep {
         }
 
         // Clear timer interrupt
-        CLINT::disable_mtimer();
+        CLINT::mtimer_disable();
     }
 }
 
