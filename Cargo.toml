@@ -13,9 +13,8 @@ rust-version = "1.59"
 [dependencies]
 embedded-hal = { version = "0.2.6", features = ["unproven"] }
 nb = "1.0.0"
-riscv = { version = "0.11.0", features = ["critical-section-single-hart"] }
+riscv = { version = "0.11.1", features = ["critical-section-single-hart"] }
 e310x = { git = "https://github.com/greenlsi/e310x.git", branch = "master", features = ["rt", "critical-section"] }
-# e310x = { path = "../greenlsi_e310x", features = ["rt", "critical-section"] }
 
 [target.'cfg(not(target_has_atomic = "32"))'.dependencies]
 portable-atomic = { version = "1.4", default-features = false, features = ["unsafe-assume-single-core"] }
