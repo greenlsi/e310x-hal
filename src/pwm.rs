@@ -20,7 +20,7 @@
 use core::marker::PhantomData;
 use core::ops::Deref;
 
-use e310x::{pwm0, PWM0, PWM1, PWM2};
+use e310x::{pwm0, Pwm0 as PWM0, Pwm1 as PWM1, Pwm2 as PWM2};
 
 /// PWM comparator index
 #[derive(Copy, Clone)]
@@ -158,8 +158,8 @@ pub struct Pwm<PWM> {
 impl<PWM: PwmX> Pwm<PWM> {
     /// Configures a PWM device
     pub fn new(pwm: PWM) -> Self {
-        pwm.cfg.reset();
-        pwm.cfg.write(|w| {
+        pwm.cfg().reset();
+        pwm.cfg().write(|w| {
             w.zerocmp()
                 .set_bit()
                 .enalways()
@@ -167,10 +167,10 @@ impl<PWM: PwmX> Pwm<PWM> {
                 .deglitch()
                 .set_bit()
         });
-        pwm.cmp0.reset();
-        pwm.cmp1.reset();
-        pwm.cmp2.reset();
-        pwm.cmp3.reset();
+        pwm.cmp0().reset();
+        pwm.cmp1().reset();
+        pwm.cmp2().reset();
+        pwm.cmp3().reset();
         Self { pwm }
     }
 }
@@ -184,29 +184,29 @@ impl<PWM: PwmX> embedded_hal::Pwm for Pwm<PWM> {
 
     fn enable(&mut self, channel: Self::Channel) {
         match channel.cmp_index {
-            CmpIndex::Cmp1 => self.pwm.cmp1.write(|w| unsafe { w.bits(u32::MAX) }),
-            CmpIndex::Cmp2 => self.pwm.cmp2.write(|w| unsafe { w.bits(u32::MAX) }),
-            CmpIndex::Cmp3 => self.pwm.cmp3.write(|w| unsafe { w.bits(u32::MAX) }),
+            CmpIndex::Cmp1 => self.pwm.cmp1().write(|w| unsafe { w.bits(u32::MAX) }),
+            CmpIndex::Cmp2 => self.pwm.cmp2().write(|w| unsafe { w.bits(u32::MAX) }),
+            CmpIndex::Cmp3 => self.pwm.cmp3().write(|w| unsafe { w.bits(u32::MAX) }),
         }
     }
 
     fn disable(&mut self, channel: Self::Channel) {
         match channel.cmp_index {
-            CmpIndex::Cmp1 => self.pwm.cmp1.reset(),
-            CmpIndex::Cmp2 => self.pwm.cmp2.reset(),
-            CmpIndex::Cmp3 => self.pwm.cmp3.reset(),
+            CmpIndex::Cmp1 => self.pwm.cmp1().reset(),
+            CmpIndex::Cmp2 => self.pwm.cmp2().reset(),
+            CmpIndex::Cmp3 => self.pwm.cmp3().reset(),
         }
     }
 
     fn get_period(&self) -> Self::Time {
-        PWM::bits_into_cmp_width(self.pwm.cmp0.read().bits())
+        PWM::bits_into_cmp_width(self.pwm.cmp0().read().bits())
     }
 
     fn get_duty(&self, channel: Self::Channel) -> Self::Duty {
         let duty = match channel.cmp_index {
-            CmpIndex::Cmp1 => self.pwm.cmp1.read().bits(),
-            CmpIndex::Cmp2 => self.pwm.cmp2.read().bits(),
-            CmpIndex::Cmp3 => self.pwm.cmp3.read().bits(),
+            CmpIndex::Cmp1 => self.pwm.cmp1().read().bits(),
+            CmpIndex::Cmp2 => self.pwm.cmp2().read().bits(),
+            CmpIndex::Cmp3 => self.pwm.cmp3().read().bits(),
         };
         PWM::bits_into_cmp_width(duty)
     }
@@ -218,9 +218,9 @@ impl<PWM: PwmX> embedded_hal::Pwm for Pwm<PWM> {
     fn set_duty(&mut self, channel: Self::Channel, duty: Self::Duty) {
         let duty = PWM::bits_from_cmp_width(duty.min(self.get_max_duty()));
         match channel.cmp_index {
-            CmpIndex::Cmp1 => self.pwm.cmp1.write(|w| unsafe { w.bits(duty) }),
-            CmpIndex::Cmp2 => self.pwm.cmp2.write(|w| unsafe { w.bits(duty) }),
-            CmpIndex::Cmp3 => self.pwm.cmp3.write(|w| unsafe { w.bits(duty) }),
+            CmpIndex::Cmp1 => self.pwm.cmp1().write(|w| unsafe { w.bits(duty) }),
+            CmpIndex::Cmp2 => self.pwm.cmp2().write(|w| unsafe { w.bits(duty) }),
+            CmpIndex::Cmp3 => self.pwm.cmp3().write(|w| unsafe { w.bits(duty) }),
         }
     }
 
@@ -229,7 +229,7 @@ impl<PWM: PwmX> embedded_hal::Pwm for Pwm<PWM> {
         P: Into<Self::Time>,
     {
         let period = PWM::bits_from_cmp_width(period.into());
-        self.pwm.count.reset();
-        self.pwm.cmp0.write(|w| unsafe { w.bits(period) });
+        self.pwm.count().reset();
+        self.pwm.cmp0().write(|w| unsafe { w.bits(period) });
     }
 }

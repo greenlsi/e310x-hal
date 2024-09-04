@@ -3,8 +3,8 @@
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
         "editor.formatOnSave": true
     },
+    "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.features": [
         "g002",
-        "v-extern",
     ]
 }

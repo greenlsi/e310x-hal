@@ -1,6 +1,6 @@
 /// Helper traits for SPI pins
 use core::ops::Deref;
-use e310x::{qspi0, QSPI0, QSPI1, QSPI2};
+use e310x::{qspi0, Qspi0 as QSPI0, Qspi1 as QSPI1, Qspi2 as QSPI2};
 
 #[doc(hidden)]
 pub trait SpiX: Deref<Target = qspi0::RegisterBlock> + private::Sealed {}

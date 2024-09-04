@@ -1,5 +1,6 @@
 use core::cell::RefCell;
 use core::ops::Deref;
+#[allow(unused_imports)]
 pub use embedded_hal::spi::{Mode, Phase, Polarity, MODE_0, MODE_1, MODE_2, MODE_3};
 use riscv::interrupt;
 

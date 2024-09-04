@@ -7,21 +7,21 @@ categories = ["embedded", "hardware-support", "no-std"]
 description = "HAL for the E310x family of microcontrollers."
 keywords = ["riscv", "e310", "hal"]
 license = "ISC"
-edition = "2018"
-rust-version = "1.59"
+edition = "2021"
+rust-version = "1.61"
 
 [dependencies]
 embedded-hal = { version = "0.2.6", features = ["unproven"] }
 nb = "1.0.0"
-riscv = { version = "0.11.1", features = ["critical-section-single-hart"] }
-e310x = { git = "https://github.com/greenlsi/e310x.git", branch = "master", features = ["rt", "critical-section"] }
+riscv = { git = "https://github.com/rust-embedded/riscv", branch = "riscv-pac-only" } # TODO use crates.io
+e310x = { git = "https://github.com/greenlsi/e310x.git", branch = "new-svd", features = ["rt", "critical-section"] } # TODO use crates.io
 
 [target.'cfg(not(target_has_atomic = "32"))'.dependencies]
 portable-atomic = { version = "1.4", default-features = false, features = ["unsafe-assume-single-core"] }
 
 [features]
 g002 = ["e310x/g002"]
-v-extern = ["e310x/v-extern"]
+v-trap = ["e310x/v-trap"]
 
 [package.metadata.docs.rs]
-features = ["g002", "v-extern"]
+features = ["g002"]
