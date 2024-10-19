@@ -13,7 +13,7 @@ rust-version = "1.61"
 [dependencies]
 embedded-hal = { version = "0.2.6", features = ["unproven"] }
 nb = "1.0.0"
-riscv = { git = "https://github.com/rust-embedded/riscv", branch = "riscv-pac-only" } # TODO use crates.io
+riscv = { git = "https://github.com/rust-embedded/riscv", branch = "master" } # TODO use crates.io
 e310x = { git = "https://github.com/greenlsi/e310x.git", branch = "new-svd", features = ["rt", "critical-section"] } # TODO use crates.io
 
 [target.'cfg(not(target_has_atomic = "32"))'.dependencies]
